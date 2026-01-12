@@ -48,7 +48,9 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      overflow: hidden;
+      min-height: 100vh;
+      padding: 1.5rem;
+      overflow-x: hidden; /* allow vertical scroll, prevent horizontal jiggle */
     }
 
     /* ==== Background neon bands ==== */
@@ -66,8 +68,8 @@
       width: 170%;
       height: 32%;
       left: -25%;
-      filter: saturate(1.5) contrast(1.1);
-      opacity: 0.95;
+      filter: saturate(1) contrast(1);
+      opacity: 0.4;
       transform-origin: left center;
       animation: slideGradient 18s ease-in-out infinite alternate;
       box-shadow: 0 0 60px rgba(0, 0, 0, 0.95);
@@ -83,6 +85,7 @@
         #7837ff 100%
       );
       transform: rotate(-20deg);
+      opacity: 0.45;
     }
 
     .gradient-2 {
@@ -95,6 +98,7 @@
         #00ffe9 100%
       );
       transform: rotate(-20deg);
+      opacity: 0.65;
     }
 
     .gradient-3 {
@@ -110,7 +114,6 @@
       opacity: 0.85;
     }
 
-    /* subtle motion for a living neon feel; remove animation if you want it static */
     @keyframes slideGradient {
       0% {
         transform: translateX(-4%) rotate(-20deg);
@@ -130,30 +133,39 @@
       padding: 2rem 1.5rem;
       max-width: 960px;
       width: 100%;
+      margin: 0 auto;
+    }
+
+    .logo-frame {
+      /* outer glass frame */
+      display: inline-flex;
+      padding: 6px;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
 
     .logo-pill {
+      /* inner glassy pill */
       display: inline-flex;
       align-items: center;
       justify-content: center;
       padding: 0.9rem 3.4rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 25px;
       background: linear-gradient(
         135deg,
-        rgba(255, 255, 255, 0.16),
-        rgba(0, 0, 0, 0.65)
+        rgba(255, 255, 255, 0.12),
+        rgba(0, 0, 0, 0.12)
       );
-      box-shadow:
-        0 20px 45px rgba(0, 0, 0, 0.95),
-        0 0 0 1px rgba(255, 255, 255, 0.15),
-        0 0 40px rgba(228, 56, 255, 0.9);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px); /* Safari */
+      -webkit-backdrop-filter: blur(14px);
+      overflow: hidden;
     }
 
     .logo-text {
-      font-size: clamp(2.1rem, 4vw, 2.8rem);
+      /* clamp fixed: min < preferred < max */
+      font-size: clamp(6.8rem, 6.5vw, 3.6rem);
       letter-spacing: 0.22em;
       font-weight: 700;
       color: #ffffff;
@@ -162,39 +174,110 @@
         0 0 18px rgba(0, 0, 0, 0.9),
         0 0 12px rgba(255, 255, 255, 0.45);
       padding-left: 0.22em; /* visually center with letter-spacing */
+      white-space: nowrap;
     }
 
     .tagline {
       margin-top: 1.7rem;
-      font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+      font-size: clamp(1rem, 2.1vw, 1.4rem);
       font-weight: 300;
       color: #cfeaff;
       text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+      line-height: 1.4;
     }
 
     .coming-soon {
       margin-top: 0.6rem;
-      font-size: clamp(0.85rem, 1.1vw, 1rem);
+      font-size: clamp(0.78rem, 1.6vw, 0.95rem);
       font-weight: 400;
       color: #f4f7ff;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+      line-height: 1.4;
     }
 
-    /* ==== Small-screen tweaks ==== */
+    /* ==== Responsive tweaks ==== */
 
-    @media (max-width: 600px) {
-      .logo-pill {
-        padding: 0.75rem 2.4rem;
+    @media (max-width: 900px) {
+      body {
+        padding: 1.25rem;
       }
 
       .hero {
         padding: 1.8rem 1.2rem;
+        max-width: 640px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        align-items: flex-start; /* avoid hard vertical centering on short viewports */
+      }
+
+      .hero {
+        margin-top: 16vh;        /* move logo down a bit on phones */
+        padding: 0 0.4rem;
+      }
+
+      .logo-frame {
+        padding: 4px;
+        border-radius: 20px;
+      }
+
+      .logo-pill {
+        padding: 0.65rem 1.9rem;
+        border-radius: 20px;
+      }
+
+      .logo-text {
+        letter-spacing: 0.18em;
+      }
+
+      .tagline {
+        margin-top: 1.4rem;
       }
 
       .coming-soon {
         letter-spacing: 0.18em;
+      }
+
+      /* soften and lower bands so they don’t dominate on small screens */
+      .gradient-strip {
+        height: 38%;
+        opacity: 0.35;
+      }
+
+      .gradient-1 {
+        top: 62%;
+      }
+
+      .gradient-2 {
+        top: 74%;
+      }
+
+      .gradient-3 {
+        top: 86%;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .hero {
+        margin-top: 14vh;
+      }
+
+      .logo-pill {
+        padding: 0.6rem 1.5rem;
+      }
+
+      .coming-soon {
+        font-size: 0.75rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gradient-strip {
+        animation: none;
       }
     }
   </style>
@@ -207,8 +290,10 @@
   </div>
 
   <main class="hero">
-    <div class="logo-pill">
-      <span class="logo-text">LUXONNIC</span>
+    <div class="logo-frame">
+      <div class="logo-pill">
+        <span class="logo-text">LUXONNIC</span>
+      </div>
     </div>
 
     <p class="tagline">
